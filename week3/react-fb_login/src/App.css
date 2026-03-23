@@ -1,0 +1,28 @@
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.login-card {
+  width: 400px;
+  text-align: center;
+  padding: 20px;
+}
+
+.home-card {
+  width: 400px;
+  text-align: center;
+  padding: 20px;
+}
+
+.profile-pic {
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.login-form {
+  margin-bottom: 15px;
+}
