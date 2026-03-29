@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Delete Object Property</title>
+  </head>
+  <body>
+    <p>We will delete object properties with the delete keyword.</p>
+    <p id="demo"></p>
+
+    <script>
+      const person = {
+        firstname: "West",
+        age: 80
+      };
+
+      delete person.age;
+
+      document.getElementById("demo").innerHTML =
+        person.firstname + " is " + person.age + " years old.";
+    </script>
+  </body>
+</html>
