@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>O(log n) - Quicksort</title>
+  </head>
+  <body>
+    <script>
+      function sort(arr) {
+        if (arr.length <= 1) {
+          return arr;
+        }
+        const pivot = arr[Math.floor(arr.length / 2)];
+        const left = arr.filter(x => x < pivot);
+        const middle = arr.filter(x => x === pivot);
+        const right = arr.filter(x => x > pivot);
+        return [...sort(left), ...middle, ...sort(right)];
+      }
+
+      const smArr = [37, 29, 30];
+      const bigArr = [43, 59, 29, 18];
+
+      console.log(sort(smArr));
+      console.log(sort(bigArr));
+    </script>
+  </body>
+</html>
