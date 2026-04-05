@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><title>Demo 3 - First Repeating Element</title></head>
+<body>
+<script>
+// Javascript program to find first
+// repeating element in arr[]
+
+let arr = [ 10, 5, 3, 4, 3, 5, 6 ];
+
+function getFirstRepeating(arr) {
+  let seen = new Set();
+
+  for (let i = 0; i < arr.length; i++) {
+    if (seen.has(arr[i])) {
+      document.write("The first repeating element is " + arr[i]);
+      return;
+    }
+    seen.add(arr[i]);
+  }
+}
+
+// Driver code
+getFirstRepeating(arr);
+</script>
+</body>
+</html>
