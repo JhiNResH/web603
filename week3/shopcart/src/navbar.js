@@ -35,6 +35,8 @@ function NavBar(props) {
                 products={props.products}
                 onAdd={props.onAdd}
                 onSubtract={props.onSubtract}
+                sortOrder={props.sortOrder}
+                onSort={props.onSort}
               />
             }
           />
