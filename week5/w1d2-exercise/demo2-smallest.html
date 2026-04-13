@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head><title>Demo 2 - Smallest & 2nd Smallest</title></head>
+<body>
+<script>
+// Javascript program to find smallest and
+// second smallest elements
+
+//Array
+let arr = [ 12, 13, 1, 10, 34, 1 ];
+let n = arr.length;
+
+function get2Smallest(arr, arr_size) {
+  let first = Infinity, second = Infinity;
+
+  for (let i = 0; i < arr_size; i++) {
+    if (arr[i] < first) {
+      second = first;
+      first = arr[i];
+    } else if (arr[i] < second && arr[i] !== first) {
+      second = arr[i];
+    }
+  }
+
+  document.write("The smallest element is " + first +
+    " and second Smallest element is " + second + ".");
+}
+
+// Driver program
+get2Smallest(arr, n);
+</script>
+</body>
+</html>
