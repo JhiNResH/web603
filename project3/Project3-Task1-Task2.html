@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Project 3 – Task 1 & 2 | TaskFlow</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f0f0;
+      color: #222;
+    }
+
+    /* ── Slide container ── */
+    .slide {
+      width: 960px;
+      min-height: 540px;
+      margin: 20px auto;
+      background: #fff;
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .slide {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        page-break-after: always;
+        box-shadow: none;
+      }
+    }
+
+    /* ── Cover slide ── */
+    .cover {
+      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+      color: #fff;
+      align-items: center;
+      text-align: center;
+      padding: 60px;
+    }
+    .cover .university {
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 8px;
+    }
+    .cover h1 {
+      font-size: 52px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .cover .tagline {
+      font-size: 20px;
+      opacity: 0.85;
+      margin-bottom: 36px;
+    }
+    .cover .meta {
+      font-size: 14px;
+      opacity: 0.7;
+      line-height: 2;
+    }
+
+    /* ── Standard slide ── */
+    .standard { padding: 50px 60px; }
+
+    .slide-header {
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 14px;
+      margin-bottom: 32px;
+    }
+    .slide-header .label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #3498db;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .slide-header h2 {
+      font-size: 30px;
+      font-weight: 700;
+      color: #2c3e50;
+    }
+
+    /* ── Content ── */
+    .content p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: #444;
+      margin-bottom: 14px;
+    }
+    .content ul {
+      padding-left: 22px;
+    }
+    .content ul li {
+      font-size: 15px;
+      line-height: 1.75;
+      color: #444;
+      margin-bottom: 8px;
+    }
+    .content ul li strong { color: #2c3e50; }
+
+    /* ── Two-column ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .col-box {
+      background: #f8fafc;
+      border-left: 4px solid #3498db;
+      border-radius: 6px;
+      padding: 18px 20px;
+    }
+    .col-box h4 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #3498db;
+      margin-bottom: 10px;
+    }
+    .col-box ul { padding-left: 18px; }
+    .col-box ul li {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #444;
+    }
+
+    /* ── Tech badges ── */
+    .badge-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .badge {
+      background: #2c3e50;
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .badge.blue   { background: #3498db; }
+    .badge.green  { background: #27ae60; }
+    .badge.orange { background: #e67e22; }
+    .badge.red    { background: #e74c3c; }
+    .badge.purple { background: #8e44ad; }
+    .badge.teal   { background: #16a085; }
+
+    /* ────────────────────────────────────────────────────────────────
+       WIREFRAME SLIDES
+    ──────────────────────────────────────────────────────────────── */
+    .wireframe-slide {
+      padding: 30px 40px;
+      background: #fff;
+    }
+    .wf-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #3498db;
+      margin-bottom: 6px;
+    }
+    .wf-subtitle {
+      font-size: 22px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    /* Browser chrome */
+    .browser {
+      border: 2px solid #bbb;
+      border-radius: 8px;
+      overflow: hidden;
+      width: 100%;
+    }
+    .browser-bar {
+      background: #e8e8e8;
+      border-bottom: 2px solid #bbb;
+      padding: 7px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #bbb; }
+    .url-bar {
+      flex: 1;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      padding: 3px 10px;
+      font-size: 11px;
+      color: #888;
+      margin-left: 8px;
+    }
+
+    /* Wireframe elements */
+    .wf-body { padding: 0; }
+
+    /* Navbar */
+    .wf-nav {
+      background: #2c3e50;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .wf-nav-brand {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      border: 2px solid rgba(255,255,255,0.5);
+      padding: 3px 10px;
+      border-radius: 3px;
+    }
+    .wf-nav-links { display: flex; gap: 10px; }
+    .wf-btn {
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      padding: 4px 12px;
+      font-size: 11px;
+      color: #555;
+      background: #f5f5f5;
+    }
+    .wf-btn.primary { background: #2c3e50; color: #fff; border-color: #2c3e50; }
+    .wf-btn.outline { background: transparent; border-color: rgba(255,255,255,0.6); color: #fff; }
+
+    /* Content area */
+    .wf-content {
+      padding: 20px;
+      background: #f8f8f8;
+      min-height: 350px;
+    }
+
+    /* Auth form wireframe */
+    .wf-auth-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 20px;
+      background: #f0f2f5;
+      min-height: 350px;
+    }
+    .wf-auth-card {
+      width: 320px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-top: 4px solid #aaa;
+      border-radius: 8px;
+      padding: 24px;
+    }
+    .wf-auth-title {
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .wf-field { margin-bottom: 12px; }
+    .wf-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: #888;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .wf-input {
+      width: 100%;
+      height: 28px;
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .wf-submit {
+      width: 100%;
+      height: 32px;
+      background: #2c3e50;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+    .wf-link-text {
+      text-align: center;
+      font-size: 10px;
+      color: #aaa;
+      margin-top: 10px;
+    }
+    .wf-link { color: #3498db; }
+
+    /* Image placeholder (X box) */
+    .img-placeholder {
+      background: #e8e8e8;
+      border: 2px solid #bbb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 4px;
+    }
+    .img-placeholder::before,
+    .img-placeholder::after {
+      content: '';
+      position: absolute;
+      background: #bbb;
+      width: 100%;
+      height: 2px;
+    }
+    .img-placeholder::before { transform: rotate(calc(atan2(var(--h), var(--w)))); }
+    .img-placeholder::after  { transform: rotate(calc(-1 * atan2(var(--h), var(--w)))); }
+    .img-label {
+      position: relative;
+      z-index: 1;
+      font-size: 10px;
+      color: #999;
+      font-weight: 600;
+    }
+
+    /* Task list wireframe */
+    .wf-row { display: flex; gap: 16px; }
+    .wf-col-form { width: 260px; flex-shrink: 0; }
+    .wf-col-list { flex: 1; }
+
+    .wf-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .wf-card-header {
+      background: #2c3e50;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
+    .wf-card-header-text {
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .wf-card-body { padding: 12px; }
+
+    .wf-task-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-left: 4px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 7px;
+    }
+    .wf-task-item.high   { border-left-color: #e74c3c; }
+    .wf-task-item.medium { border-left-color: #f39c12; }
+    .wf-task-item.low    { border-left-color: #27ae60; }
+    .wf-checkbox { width: 12px; height: 12px; border: 1px solid #aaa; border-radius: 2px; flex-shrink: 0; }
+    .wf-task-text { flex: 1; }
+    .wf-task-title-line { height: 8px; background: #ccc; border-radius: 2px; width: 60%; margin-bottom: 4px; }
+    .wf-task-desc-line  { height: 6px; background: #e8e8e8; border-radius: 2px; width: 40%; }
+    .wf-task-actions { display: flex; gap: 4px; }
+    .wf-action-btn { width: 20px; height: 20px; border: 1px solid #ddd; border-radius: 3px; background: #f8f8f8; }
+
+    .wf-stats {
+      display: flex;
+      gap: 16px;
+      padding: 8px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .wf-stat { font-size: 9px; color: #888; }
+    .wf-stat strong { color: #2c3e50; }
+
+    .wf-filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .wf-filter-title { font-size: 11px; font-weight: 700; color: #333; }
+    .wf-filter-btns { display: flex; gap: 4px; }
+    .wf-filter-btn { padding: 2px 8px; font-size: 9px; border: 1px solid #3498db; border-radius: 3px; color: #3498db; }
+    .wf-filter-btn.active { background: #3498db; color: #fff; }
+
+    .wf-badge {
+      font-size: 8px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      color: #fff;
+    }
+    .wf-badge.high   { background: #e74c3c; }
+    .wf-badge.medium { background: #f39c12; }
+    .wf-badge.low    { background: #27ae60; }
+
+    /* Footer accent */
+    .slide-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #2c3e50, #3498db);
+    }
+
+    /* Section divider slide */
+    .section-slide {
+      background: #f7f9fc;
+      border-left: 12px solid #3498db;
+      align-items: flex-start;
+      padding: 60px;
+    }
+    .section-slide .section-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #3498db;
+      margin-bottom: 10px;
+    }
+    .section-slide h2 {
+      font-size: 42px;
+      font-weight: 800;
+      color: #2c3e50;
+    }
+    .section-slide p {
+      font-size: 15px;
+      color: #666;
+      margin-top: 14px;
+      max-width: 500px;
+    }
+
+    /* Annotation */
+    .annotation {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: #fffbea;
+      border-left: 3px solid #f39c12;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #7a6000;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 1 – COVER
+══════════════════════════════════════════════════ -->
+<div class="slide cover">
+  <div class="university">Westcliff University · WEB603</div>
+  <h1>TaskFlow</h1>
+  <div class="tagline">Personal Task Manager — Project 3</div>
+  <div class="meta">
+    Student: [Your Name]<br>
+    Course: WEB603 — Full Stack Web Development<br>
+    Module 6 · Project 3
+  </div>
+  <div class="slide-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 2 – TASK 1 DIVIDER
+══════════════════════════════════════════════════ -->
+<div class="slide section-slide">
+  <div class="section-label">Project 3</div>
+  <h2>Task 1<br>Project Proposal</h2>
+  <p>Introduction · Goals · Target Audience · Key Features · Technology Requirements</p>
+  <div class="slide-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 3 – INTRODUCTION
+══════════════════════════════════════════════════ -->
+<div class="slide standard">
+  <div class="slide-header">
+    <div class="label">Task 1 — Proposal</div>
+    <h2>Introduction</h2>
+  </div>
+  <div class="content">
+    <p><strong>TaskFlow</strong> is a full-stack Single Page Application (SPA) designed to help individuals organize and manage their daily tasks effectively. Users can create, update, prioritize, and complete tasks through a clean and responsive interface.</p>
+    <p>The app addresses a common problem: the lack of a simple, personal, and secure task management tool that works across devices without requiring a complex setup. TaskFlow delivers a modern web experience with user authentication, real-time data updates, and offline capability through Progressive Web App (PWA) technology.</p>
+    <p>The project is built as a full-stack application where <strong>React</strong> powers the front-end and <strong>Express + MongoDB</strong> powers the back-end, following industry-standard practices for security, scalability, and maintainability.</p>
+  </div>
+  <div class="slide-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 4 – GOALS & OBJECTIVES
+══════════════════════════════════════════════════ -->
+<div class="slide standard">
+  <div class="slide-header">
+    <div class="label">Task 1 — Proposal</div>
+    <h2>Goals &amp; Objectives</h2>
+  </div>
+  <div class="content two-col">
+    <div class="col-box">
+      <h4>Primary Goals</h4>
+      <ul>
+        <li>Build a fully functional CRUD SPA for personal task management</li>
+        <li>Provide secure signup, login, and logout with JWT authentication</li>
+        <li>Enable users to add, edit, delete, and complete tasks</li>
+        <li>Support task prioritization (High / Medium / Low)</li>
+        <li>Deliver a responsive UI accessible on mobile and desktop</li>
+      </ul>
+    </div>
+    <div class="col-box">
+      <h4>Technical Objectives</h4>
+      <ul>
+        <li>Implement React with hooks and Context API</li>
+        <li>Build a RESTful API with Express and MongoDB</li>
+        <li>Secure routes with JWT tokens stored in HTTP-only cookies</li>
+        <li>Apply SASS for modular, maintainable styling</li>
+        <li>Enable PWA for installability and offline support</li>
+        <li>Deploy on a live server with SSL/HTTPS</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 5 – TARGET AUDIENCE
+══════════════════════════════════════════════════ -->
+<div class="slide standard">
+  <div class="slide-header">
+    <div class="label">Task 1 — Proposal</div>
+    <h2>Target Audience</h2>
+  </div>
+  <div class="content two-col">
+    <div class="col-box">
+      <h4>Primary Users</h4>
+      <ul>
+        <li><strong>Age:</strong> 18–45</li>
+        <li><strong>Gender:</strong> All genders</li>
+        <li><strong>Occupation:</strong> Students, freelancers, remote workers, professionals</li>
+        <li><strong>Tech comfort:</strong> Moderate to high — regular smartphone and web app users</li>
+        <li><strong>Device:</strong> Desktop, tablet, and mobile</li>
+      </ul>
+    </div>
+    <div class="col-box">
+      <h4>User Needs</h4>
+      <ul>
+        <li>A private, personal space to track daily tasks</li>
+        <li>Simple and fast interface — no learning curve</li>
+        <li>Ability to prioritize tasks and filter by status</li>
+        <li>Secure account so data is private to each user</li>
+        <li>Works on any device, even with limited connectivity (PWA)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 6 – KEY FEATURES
+══════════════════════════════════════════════════ -->
+<div class="slide standard">
+  <div class="slide-header">
+    <div class="label">Task 1 — Proposal</div>
+    <h2>Key Features</h2>
+  </div>
+  <div class="content">
+    <ul>
+      <li><strong>User Authentication</strong> — Secure signup, login, and logout with JWT stored in HTTP-only cookies and server-side sessions</li>
+      <li><strong>Task CRUD</strong> — Create, read, update, and delete personal tasks; each task belongs exclusively to the logged-in user</li>
+      <li><strong>Priority Levels</strong> — Assign High, Medium, or Low priority to each task with color-coded visual indicators</li>
+      <li><strong>Task Status &amp; Filtering</strong> — Mark tasks as complete/incomplete; filter view by All, Active, or Done</li>
+      <li><strong>Form Validation</strong> — Client-side and server-side validation on all forms with clear error messages</li>
+      <li><strong>Responsive Design</strong> — Bootstrap 5 grid adapts layout for mobile, tablet, and desktop viewports</li>
+      <li><strong>PWA Support</strong> — Web App Manifest + Service Worker enable installation on device home screen and offline browsing</li>
+      <li><strong>Live Stats</strong> — Real-time counter showing total, active, and completed task counts</li>
+    </ul>
+  </div>
+  <div class="slide-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 7 – TECHNOLOGY REQUIREMENTS
+══════════════════════════════════════════════════ -->
+<div class="slide standard">
+  <div class="slide-header">
+    <div class="label">Task 1 — Proposal</div>
+    <h2>Technology Requirements</h2>
+  </div>
+  <div class="content">
+    <div style="margin-bottom:20px;">
+      <strong style="color:#2c3e50; display:block; margin-bottom:8px;">Front-End</strong>
+      <div class="badge-grid">
+        <span class="badge blue">React 18</span>
+        <span class="badge blue">React Router v6</span>
+        <span class="badge blue">Axios</span>
+        <span class="badge teal">Bootstrap 5</span>
+        <span class="badge teal">SASS / SCSS</span>
+        <span class="badge green">PWA (Manifest + SW)</span>
+      </div>
+    </div>
+    <div style="margin-bottom:20px;">
+      <strong style="color:#2c3e50; display:block; margin-bottom:8px;">Back-End</strong>
+      <div class="badge-grid">
+        <span class="badge">Node.js</span>
+        <span class="badge">Express.js</span>
+        <span class="badge orange">MongoDB</span>
+        <span class="badge orange">Mongoose</span>
+        <span class="badge red">bcryptjs</span>
+        <span class="badge purple">JSON Web Token (JWT)</span>
+        <span class="badge">express-session</span>
+        <span class="badge">cookie-parser</span>
+      </div>
+    </div>
+    <div>
+      <strong style="color:#2c3e50; display:block; margin-bottom:8px;">Infrastructure &amp; Tools</strong>
+      <div class="badge-grid">
+        <span class="badge green">SSL / HTTPS</span>
+        <span class="badge">GitHub</span>
+        <span class="badge blue">Live Server (Render / Railway)</span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 8 – TASK 2 DIVIDER
+══════════════════════════════════════════════════ -->
+<div class="slide section-slide">
+  <div class="section-label">Project 3</div>
+  <h2>Task 2<br>Wireframes</h2>
+  <p>Screen 1: Home (Task Dashboard) · Screen 2: Login · Screen 3: Sign Up</p>
+  <div class="slide-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 9 – WIREFRAME: HOME (TASK DASHBOARD)
+══════════════════════════════════════════════════ -->
+<div class="slide wireframe-slide">
+  <div class="wf-title">Wireframe — Screen 1 of 3</div>
+  <div class="wf-subtitle">Home · Task Dashboard (Protected Route)</div>
+
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="url-bar">https://taskflow.app/</div>
+    </div>
+    <div class="wf-body">
+      <!-- Navbar -->
+      <div class="wf-nav">
+        <div class="wf-nav-brand">☰ TaskFlow</div>
+        <div class="wf-nav-links">
+          <div class="wf-btn" style="background:transparent;border-color:rgba(255,255,255,0.4);color:#ddd;font-size:10px;">Hello, [User Name]</div>
+          <div class="wf-btn outline">Logout</div>
+        </div>
+      </div>
+      <!-- Content -->
+      <div class="wf-content">
+        <div class="wf-row">
+          <!-- Form column -->
+          <div class="wf-col-form">
+            <div class="wf-card">
+              <div class="wf-card-header"><span class="wf-card-header-text">＋ New Task</span></div>
+              <div class="wf-card-body">
+                <div class="wf-field">
+                  <span class="wf-label">Title *</span>
+                  <div class="wf-input"></div>
+                </div>
+                <div class="wf-field">
+                  <span class="wf-label">Description</span>
+                  <div style="width:100%;height:52px;background:#f5f5f5;border:1px solid #ccc;border-radius:4px;"></div>
+                </div>
+                <div class="wf-field">
+                  <span class="wf-label">Priority</span>
+                  <div style="width:100%;height:28px;background:#f5f5f5;border:1px solid #ccc;border-radius:4px;"></div>
+                </div>
+                <div class="wf-submit"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Task list column -->
+          <div class="wf-col-list">
+            <div class="wf-stats">
+              <span class="wf-stat">Total: <strong>5</strong></span>
+              <span class="wf-stat">Done: <strong>2</strong></span>
+              <span class="wf-stat">Active: <strong>3</strong></span>
+            </div>
+            <div class="wf-filter-bar">
+              <span class="wf-filter-title">My Tasks</span>
+              <div class="wf-filter-btns">
+                <div class="wf-filter-btn active">All</div>
+                <div class="wf-filter-btn">Active</div>
+                <div class="wf-filter-btn">Done</div>
+              </div>
+            </div>
+            <!-- Task items -->
+            <div class="wf-task-item high">
+              <div class="wf-checkbox"></div>
+              <div class="wf-task-text">
+                <div class="wf-task-title-line"></div>
+                <div class="wf-task-desc-line"></div>
+              </div>
+              <span class="wf-badge high">High</span>
+              <div class="wf-task-actions"><div class="wf-action-btn"></div><div class="wf-action-btn"></div></div>
+            </div>
+            <div class="wf-task-item medium">
+              <div class="wf-checkbox"></div>
+              <div class="wf-task-text">
+                <div class="wf-task-title-line" style="width:50%;"></div>
+                <div class="wf-task-desc-line" style="width:35%;"></div>
+              </div>
+              <span class="wf-badge medium">Med</span>
+              <div class="wf-task-actions"><div class="wf-action-btn"></div><div class="wf-action-btn"></div></div>
+            </div>
+            <div class="wf-task-item low" style="opacity:0.5;">
+              <div class="wf-checkbox" style="background:#ddd;"></div>
+              <div class="wf-task-text">
+                <div class="wf-task-title-line" style="width:45%;background:#bbb;text-decoration:line-through;"></div>
+              </div>
+              <span class="wf-badge low">Low</span>
+              <div class="wf-task-actions"><div class="wf-action-btn"></div><div class="wf-action-btn"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>Screen elements:</strong> Navigation bar (logo + user greeting + logout) · Stats bar (total/done/active counts) · Filter buttons (All / Active / Done) · Task form (title, description, priority selector, submit) · Task cards (checkbox, title, description, priority badge, edit + delete buttons) · Color-coded left border by priority
+  </div>
+  <div class="slide-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 10 – WIREFRAME: LOGIN
+══════════════════════════════════════════════════ -->
+<div class="slide wireframe-slide">
+  <div class="wf-title">Wireframe — Screen 2 of 3</div>
+  <div class="wf-subtitle">Login Page (Public Route)</div>
+
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="url-bar">https://taskflow.app/login</div>
+    </div>
+    <div class="wf-body">
+      <!-- Navbar -->
+      <div class="wf-nav">
+        <div class="wf-nav-brand">☰ TaskFlow</div>
+        <div class="wf-nav-links">
+          <div class="wf-btn outline">Login</div>
+          <div class="wf-btn outline">Sign Up</div>
+        </div>
+      </div>
+      <!-- Auth form -->
+      <div class="wf-auth-wrapper">
+        <div class="wf-auth-card">
+          <div class="wf-auth-title">Welcome Back</div>
+          <div class="wf-field">
+            <span class="wf-label">Email</span>
+            <div class="wf-input"></div>
+          </div>
+          <div class="wf-field">
+            <span class="wf-label">Password</span>
+            <div class="wf-input"></div>
+          </div>
+          <div class="wf-submit"></div>
+          <div class="wf-link-text">
+            Don't have an account? <span class="wf-link">Sign up</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>Screen elements:</strong> Navigation bar (logo, Login + Sign Up links) · Centered auth card with top accent border · Email input · Password input · Submit button · Link to Signup page · Inline validation errors shown below each field on submit
+  </div>
+  <div class="slide-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 11 – WIREFRAME: SIGN UP
+══════════════════════════════════════════════════ -->
+<div class="slide wireframe-slide">
+  <div class="wf-title">Wireframe — Screen 3 of 3</div>
+  <div class="wf-subtitle">Sign Up Page (Public Route)</div>
+
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="url-bar">https://taskflow.app/signup</div>
+    </div>
+    <div class="wf-body">
+      <!-- Navbar -->
+      <div class="wf-nav">
+        <div class="wf-nav-brand">☰ TaskFlow</div>
+        <div class="wf-nav-links">
+          <div class="wf-btn outline">Login</div>
+          <div class="wf-btn outline">Sign Up</div>
+        </div>
+      </div>
+      <!-- Auth form -->
+      <div class="wf-auth-wrapper">
+        <div class="wf-auth-card">
+          <div class="wf-auth-title">Create Account</div>
+          <div class="wf-field">
+            <span class="wf-label">Full Name</span>
+            <div class="wf-input"></div>
+          </div>
+          <div class="wf-field">
+            <span class="wf-label">Email</span>
+            <div class="wf-input"></div>
+          </div>
+          <div class="wf-field">
+            <span class="wf-label">Password (min 6 chars)</span>
+            <div class="wf-input"></div>
+          </div>
+          <div class="wf-field">
+            <span class="wf-label">Confirm Password</span>
+            <div class="wf-input"></div>
+          </div>
+          <div class="wf-submit"></div>
+          <div class="wf-link-text">
+            Already have an account? <span class="wf-link">Login</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>Screen elements:</strong> Navigation bar · Centered auth card · Full Name input · Email input · Password input (min 6 chars) · Confirm Password input · Submit button · Link to Login page · Client-side validation: required fields, email format, password match, min length
+  </div>
+  <div class="slide-footer"></div>
+</div>
+
+</body>
+</html>
