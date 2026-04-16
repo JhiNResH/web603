@@ -1,0 +1,36 @@
+.anim-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 16px;
+  max-width: 320px;
+}
+
+.anim-item {
+  background: #f1f8ff;
+  border: 1px solid #c8e1ff;
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+.fade-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+.fade-exit-active {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
