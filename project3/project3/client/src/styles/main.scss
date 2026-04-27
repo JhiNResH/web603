@@ -1,0 +1,157 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ─── Base ───────────────────────────────────────────────────────────────────
+
+body {
+  background-color: $light-bg;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+// ─── Navbar ─────────────────────────────────────────────────────────────────
+
+.navbar-taskflow {
+  background-color: $primary;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+
+  .navbar-brand {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff !important;
+  }
+
+  .nav-link,
+  .navbar-text {
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.5);
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+  }
+}
+
+// ─── Main layout ────────────────────────────────────────────────────────────
+
+.main-container {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  min-height: calc(100vh - 56px);
+}
+
+// ─── Auth pages ─────────────────────────────────────────────────────────────
+
+.auth-wrapper {
+  @include flex-center;
+  min-height: calc(100vh - 56px);
+  padding: 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  @include card-base;
+  border-top: 4px solid $secondary;
+
+  .card-title {
+    color: $primary;
+    font-weight: 700;
+  }
+}
+
+// ─── Task form ───────────────────────────────────────────────────────────────
+
+.task-form-card {
+  @include card-base;
+  border-top: 4px solid $secondary;
+
+  .card-header {
+    background-color: $primary;
+    border-radius: $card-radius $card-radius 0 0;
+    border: none;
+  }
+}
+
+// ─── Task cards ─────────────────────────────────────────────────────────────
+
+.task-card {
+  @include card-base;
+  @include card-hover;
+  border-left: 4px solid transparent;
+
+  &.priority-high   { border-left-color: $accent; }
+  &.priority-medium { border-left-color: $warning; }
+  &.priority-low    { border-left-color: $success; }
+
+  &.is-completed {
+    opacity: 0.65;
+  }
+
+  .task-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    &.done {
+      text-decoration: line-through;
+      color: #999;
+    }
+  }
+
+  .task-desc {
+    font-size: 0.82rem;
+    color: #777;
+    margin-top: 2px;
+  }
+}
+
+// ─── Filter bar ─────────────────────────────────────────────────────────────
+
+.filter-btn {
+  font-size: 0.82rem;
+  padding: 0.25rem 0.75rem;
+}
+
+// ─── Stats bar ──────────────────────────────────────────────────────────────
+
+.stats-bar {
+  background: #fff;
+  border-radius: $card-radius;
+  box-shadow: $shadow-sm;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1.25rem;
+
+  .stat-item {
+    font-size: 0.85rem;
+    color: #666;
+    strong { color: $primary; }
+  }
+}
+
+// ─── Empty state ────────────────────────────────────────────────────────────
+
+.empty-state {
+  @include flex-center;
+  flex-direction: column;
+  min-height: 200px;
+  color: #aaa;
+
+  .empty-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+  p { font-size: 1rem; }
+}
+
+// ─── Loading ─────────────────────────────────────────────────────────────────
+
+.page-loading {
+  @include flex-center;
+  min-height: 60vh;
+}
+
+// ─── Responsive ─────────────────────────────────────────────────────────────
+
+@media (max-width: 576px) {
+  .task-card .d-flex { flex-wrap: wrap; gap: 0.5rem; }
+  .auth-card { box-shadow: none; border-top: none; }
+}

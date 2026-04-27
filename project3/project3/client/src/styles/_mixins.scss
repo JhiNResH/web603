@@ -1,0 +1,28 @@
+@use 'variables' as *;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-base {
+  border: none;
+  border-radius: $card-radius;
+  box-shadow: $shadow-sm;
+  transition: $transition;
+}
+
+@mixin card-hover {
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+@mixin responsive-text($desktop, $mobile) {
+  font-size: $desktop;
+  @media (max-width: 768px) {
+    font-size: $mobile;
+  }
+}
