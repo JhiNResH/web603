@@ -7,9 +7,6 @@ const connectDB = require('./config/db');
 
 const app = express();
 
-// Connect to MongoDB
-connectDB();
-
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
@@ -31,6 +28,15 @@ app.use(session({
   }
 }));
 
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    res.status(500).json({ message: 'Database connection error' });
+  }
+});
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/tasks', require('./routes/tasks'));
@@ -39,4 +45,8 @@ app.use('/api/tasks', require('./routes/tasks'));
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+module.exports = app;
